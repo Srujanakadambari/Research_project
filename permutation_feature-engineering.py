@@ -220,7 +220,7 @@ for idx, score in zip(feature_indices, importance_scores):
 75/75 [==============================] - 0s 761us/step
 75/75 [==============================] - 0s 748us/step
 75/75 [==============================] - 0s 747us/step
-# Feature Index: 2, Importance: 0.051416666666666666
+Feature Index: 2, Importance: 0.051416666666666666
 Feature Index: 3, Importance: 0.20025000000000004
 Feature Index: 1, Importance: 0.37
 Feature Index: 5, Importance: 0.3140833333333333
