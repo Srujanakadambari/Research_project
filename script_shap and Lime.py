@@ -175,5 +175,76 @@ explanation = explainer.explain_instance(X_test[instance_index], predict_proba_w
 # Visualize the explanation
 explanation.show_in_notebook()
 
+# Create a DataFrame for seaborn
+df = pd.DataFrame(data=shap_values_reshaped, columns=feature_names)
+
+# Generate summary plot as a beeswarm plot
+plt.figure(figsize=(12, 8))
+shap.summary_plot(shap_values_reshaped, df, plot_type='dot', feature_names=feature_names)
+plt.show()
+
+# Define the index corresponding to the median prediction
+median_index = len(y_pred) // 2
+
+# Create a waterfall plot for the median prediction
+plt.figure(figsize=(12, 8))
+for output_idx in range(shap_values.shape[-1]):
+    shap.waterfall_plot(shap_values[median_index, :, output_idx], max_display=99, show=False)
+    plt.title("Waterfall Plot for Median Prediction")
+    plt.tight_layout()
+
+plt.show()
 
 
+# Plot the SHAP values for the median prediction
+plt.figure(figsize=(12, 8))
+plt.barh(feature_names, shap_values_median_reshaped[0])
+plt.xlabel('SHAP Value')
+plt.ylabel('Feature')
+plt.title('SHAP Local Bar Plot for Median Prediction')
+plt.show()
+
+# Plot the SHAP values for the first sample
+plt.figure(figsize=(10, 6))
+for i in range(len(feature_names)):
+    shap_value = shap_values_first_sample[i]
+    if isinstance(shap_value, np.ndarray):
+        shap_value = shap_value[0]  # Take the first value if it's an array
+    color = 'r' if shap_value >= 0 else 'b'
+    plt.barh(y=feature_names[i], width=shap_value, color=color)
+    plt.text(shap_value, i, '{:.2f}'.format(float(shap_value)), ha='left' if shap_value >= 0 else 'right', va='center')
+plt.xlabel('SHAP Value')
+plt.ylabel('Feature')
+plt.title('SHAP Values for the First Sample')
+plt.gca().invert_yaxis()  # Reverse y-axis
+plt.show()
+
+# Plot the SHAP values for the middle sample
+plt.figure(figsize=(10, 6))
+for i in range(len(feature_names)):
+    shap_value = shap_values_middle_sample[i]
+    if isinstance(shap_value, np.ndarray):
+        shap_value = shap_value[0]  # Take the first value if it's an array
+    color = 'r' if shap_value >= 0 else 'b'
+    plt.barh(y=feature_names[i], width=shap_value, color=color)
+    plt.text(shap_value, i, '{:.2f}'.format(float(shap_value)), ha='left' if shap_value >= 0 else 'right', va='center')
+plt.xlabel('SHAP Value')
+plt.ylabel('Feature')
+plt.title('SHAP Values for the mean value of Sample')
+plt.gca().invert_yaxis()  # Reverse y-axis
+plt.show()
+
+# Plot the SHAP values for the last sample
+plt.figure(figsize=(10, 6))
+for i in range(len(feature_names)):
+    shap_value = shap_values_last_sample[i]
+    if isinstance(shap_value, np.ndarray):
+        shap_value = shap_value[0]  # Take the first value if it's an array
+    color = 'r' if shap_value >= 0 else 'b'
+    plt.barh(y=feature_names[i], width=shap_value, color=color)
+    plt.text(shap_value, i, '{:.2f}'.format(float(shap_value)), ha='left' if shap_value >= 0 else 'right', va='center')
+plt.xlabel('SHAP Value')
+plt.ylabel('Feature')
+plt.title('Local SHAP plot at 100th percentile value')
+plt.gca().invert_yaxis()  # Reverse y-axis
+plt.show()
